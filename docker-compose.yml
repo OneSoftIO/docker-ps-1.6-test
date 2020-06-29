@@ -4,7 +4,7 @@ services:
   prestashop:
     image: prestashop/prestashop:1.6-7.1-apache
     ports:
-      - 8888:80
+      - 9999:80
     links:
       - mariadb:mariadb
     depends_on:
@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.database
     ports: 
-      - "3306:3306"
+      - "9998:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=prestashop
@@ -34,7 +34,7 @@ services:
     links:
       - mariadb
     ports: 
-      - 81:80 
+      - 9997:80
     environment:
       - PMA_HOST=mariadb
       - PMA_USER=root
