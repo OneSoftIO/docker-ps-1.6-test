@@ -2,9 +2,13 @@ version: '3.3'
 
 services: 
   prestashop:
-    image: prestashop/prestashop:1.6-7.1-apache
+    build: 
+      context: .
+      dockerfile: ./docker/Dockerfile.prestashop
+    # image: prestashop/prestashop:1.6-7.1-apache
     ports:
       - 8888:80
+      - 8443:443
     links:
       - mariadb:mariadb
     depends_on:
@@ -14,6 +18,7 @@ services:
     environment:
       - PS_DEV_MODE=1
       - DB_SERVER=mariadb
+      - PS_SSL_ENABLED=1
       - DB_USER=root
       - DB_PASSWD=root
       - DB_NAME=prestashop

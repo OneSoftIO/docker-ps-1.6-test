@@ -1,0 +1,24 @@
+FROM prestashop/prestashop:1.6-7.1-apache
+
+RUN apt-get update -qq \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y git \
+    mariadb-client wget curl \
+    ca-certificates lsb-release apt-transport-https gnupg bsdmainutils
+
+RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee -a /etc/apt/sources.list.d/php.list \
+    && curl https://packages.sury.org/php/apt.gpg | apt-key add - \
+    && apt-get update -qq
+
+#Adding package
+RUN pecl install zip
+
+RUN a2enmod ssl
+
+ADD ./docker/ssl /etc/apache2/ssl
+ADD ./docker/php/php.ini /usr/local/etc/php/php.ini
+
+ADD ./docker/site.conf /etc/apache2/sites-available/000-default.conf
+
+
+EXPOSE 443
+EXPOSE 80
